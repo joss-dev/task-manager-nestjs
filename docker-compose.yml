@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: ${POSTGRES_CONTAINER_NAME:-postgres_db}
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-user_crud}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-root}
+      POSTGRES_DB: ${POSTGRES_DB:-db_crud}
+    volumes:
+      - ${POSTGRES_VOLUME:-./postgres}:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
