@@ -26,6 +26,10 @@ export class UsersService {
     });
   }
 
+  findOneByUserName(userName: string) {
+    return this.usersRepository.findOne({ where: { userName } });
+  }
+
   findAll() {
     return this.usersRepository.find();
   }

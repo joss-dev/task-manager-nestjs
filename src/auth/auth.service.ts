@@ -1,26 +1,59 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { UsersService } from 'src/users/users.service';
+import { RegisterUserDto } from './dto/register.dto';
+import { LoginUserDto } from './dto/login.dto';
+import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+  ) {}
+
+  async login(LoginUserDto: LoginUserDto) {
+    const user = await this.usersService.findOneByEmailWithPassword(
+      LoginUserDto.email,
+    );
+    if (!user) {
+      throw new BadRequestException('Invalid credentials');
+    }
+
+    const isPasswordValid = await bcrypt.compare(
+      LoginUserDto.password,
+      user.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new BadRequestException('Invalid credentials');
+    }
+
+    const payload = { sub: user.id };
+
+    const token = await this.jwtService.signAsync(payload);
+
+    return { message: 'Login successful', token };
   }
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+  async register(createUserDto: RegisterUserDto) {
+    const existingEmail = await this.usersService.findOneByEmail(
+      createUserDto.email,
+    );
+    if (existingEmail) {
+      throw new BadRequestException('Email already exists');
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
+    const existingUserName = await this.usersService.findOneByUserName(
+      createUserDto.userName,
+    );
+    if (existingUserName) {
+      throw new BadRequestException('Username already exists');
+    }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
+    createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    const userCreated = await this.usersService.create(createUserDto);
+    return { message: 'User registered successfully', userCreated };
   }
 }
