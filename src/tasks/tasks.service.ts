@@ -65,20 +65,15 @@ export class TasksService {
   }
 
   async update(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
-    const task = await this.findOne(id);
-
-    Object.assign(task, updateTaskDto);
-
+    const updatedTask = await this.taskRepository.update(id, updateTaskDto);
     this.eventEmitter.emit(
       'task.updated',
-      new TaskUpdatedEvent(id, task.user.id),
+      new TaskUpdatedEvent(id, updatedTask.user.id),
     );
-
-    return this.taskRepository.update(task);
+    return updatedTask;
   }
 
   async remove(id: string): Promise<void> {
-    const task = await this.findOne(id);
-    await this.taskRepository.delete(task);
+    await this.taskRepository.delete(id);
   }
 }
