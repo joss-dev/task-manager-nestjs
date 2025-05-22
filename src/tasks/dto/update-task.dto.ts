@@ -9,6 +9,7 @@ export class UpdateTaskDto {
   title?: string;
 
   @IsOptional()
+  @MinLength(1, { message: 'La descripción no puede estar vacía' })
   @IsString({ message: 'La descripción debe ser una cadena de texto' })
   @Transform(({ value }: { value: string }) => value.trim())
   description?: string;

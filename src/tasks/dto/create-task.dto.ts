@@ -10,6 +10,7 @@ export class CreateTaskDto {
 
   @IsOptional()
   @IsString({ message: 'La descripción debe ser una cadena de texto' })
+  @MinLength(1, { message: 'La descripción no puede estar vacía' })
   @Transform(({ value }: { value: string }) => value.trim())
   description?: string;
 }

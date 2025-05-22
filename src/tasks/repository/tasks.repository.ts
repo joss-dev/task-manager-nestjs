@@ -18,7 +18,7 @@ export class TaskRepository implements ITaskRepository {
     return await this.repository.save(task);
   }
 
-  async update(id: number, updateDto: UpdateTaskDto): Promise<Task> {
+  async update(id: string, updateDto: UpdateTaskDto): Promise<Task> {
     await this.repository.update(id, updateDto);
     return this.repository.findOneByOrFail({ id });
   }
@@ -27,11 +27,11 @@ export class TaskRepository implements ITaskRepository {
     return this.repository.find();
   }
 
-  async findOne(id: number): Promise<Task | null> {
-    return this.repository.findOneBy({ id });
+  async findOne(id: string): Promise<Task | null> {
+    return this.repository.findOne({ where: { id } });
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     await this.repository.delete(id);
   }
 }
