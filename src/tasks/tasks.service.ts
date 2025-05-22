@@ -9,12 +9,15 @@ import { TaskFactory } from './factory/task.factory';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { TaskCreatedEvent } from 'src/events/events/task-created.event';
 import { TaskUpdatedEvent } from 'src/events/events/task-updated.event';
+import { Inject } from '@nestjs/common';
+import { TASK_REPOSITORY } from './constants/task-repository.token';
+import { ITaskRepository } from './interfaces/task-repository.interface';
 
 @Injectable()
 export class TasksService {
   constructor(
-    @InjectRepository(Task)
-    private readonly taskRepository: Repository<Task>,
+    @Inject(TASK_REPOSITORY)
+    private readonly taskRepository: ITaskRepository,
 
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
@@ -33,7 +36,7 @@ export class TasksService {
 
     const task = this.taskFactory.create(createTaskDto, user);
 
-    const savedTask = await this.taskRepository.save(task);
+    const savedTask = await this.taskRepository.create(task);
 
     this.eventEmitter.emit(
       'task.created',
@@ -44,26 +47,15 @@ export class TasksService {
   }
 
   async findAll(): Promise<Task[]> {
-    return this.taskRepository.find({
-      where: {
-        deletedAt: IsNull(),
-      },
-      relations: ['user'],
-    });
+    return this.taskRepository.findAll();
   }
 
   async findByIdWithUser(id: string) {
-    return this.taskRepository.findOne({
-      where: { id },
-      relations: ['user'],
-    });
+    return this.taskRepository.findByIdWithUser(id);
   }
 
   async findOne(id: string): Promise<Task> {
-    const task = await this.taskRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-      relations: ['user'],
-    });
+    const task = await this.taskRepository.findOne(id);
 
     if (!task) {
       throw new NotFoundException('Tarea no encontrada');
@@ -82,11 +74,11 @@ export class TasksService {
       new TaskUpdatedEvent(id, task.user.id),
     );
 
-    return this.taskRepository.save(task);
+    return this.taskRepository.update(task);
   }
 
   async remove(id: string): Promise<void> {
     const task = await this.findOne(id);
-    await this.taskRepository.softRemove(task);
+    await this.taskRepository.delete(task);
   }
 }

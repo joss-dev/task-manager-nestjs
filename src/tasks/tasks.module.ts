@@ -16,7 +16,6 @@ import { EventsModule } from 'src/events/events.module';
   providers: [
     TasksService,
     TaskFactory,
-    TaskRepository,
     {
       provide: TASK_REPOSITORY,
       useClass: TaskRepository,

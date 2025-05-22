@@ -8,4 +8,5 @@ export interface ITaskRepository {
   findAll(): Promise<Task[]>;
   findOne(id: string): Promise<Task | null>;
   delete(id: string): Promise<void>;
+  findByIdWithUser(id: string): Promise<Task | null>;
 }
