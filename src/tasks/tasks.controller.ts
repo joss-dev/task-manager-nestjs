@@ -13,8 +13,8 @@ import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
-import { UserId } from 'src/common/decorators/user-id.decorator';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { UserId } from '../common/decorators/user-id.decorator';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { TaskOwnerGuard } from './guards/task-owner/task-owner.guard';
 
 @UseGuards(AuthGuard)
