@@ -76,10 +76,12 @@ export class TasksService {
     const task = await this.findOne(id);
 
     Object.assign(task, updateTaskDto);
+
     this.eventEmitter.emit(
       'task.updated',
       new TaskUpdatedEvent(id, task.user.id),
     );
+
     return this.taskRepository.save(task);
   }
 

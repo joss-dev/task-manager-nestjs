@@ -9,7 +9,7 @@ export class InternalMessageNotificationStrategy
     InternalMessageNotificationStrategy.name,
   );
 
-  async sendNotification(taskId: string, userId: string): Promise<void> {
+  sendNotification(taskId: string, userId: string): void {
     this.logger.log(
       `Mensaje interno: Tarea actualizada (ID: ${taskId}) por el usuario ${userId}`,
     );
