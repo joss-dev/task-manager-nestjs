@@ -9,7 +9,7 @@ import { Reflector } from '@nestjs/core';
 import { TasksService } from '../../tasks.service';
 import { Request } from 'express';
 import { Task } from '../../entities/task.entity';
-import { AuthenticatedRequest } from 'src/auth/interfaces/authenticated-request.interface';
+import { AuthenticatedRequest } from '../../../auth/interfaces/authenticated-request.interface';
 
 @Injectable()
 export class TaskOwnerGuard implements CanActivate {

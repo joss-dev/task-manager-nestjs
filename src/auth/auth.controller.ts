@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto/login.dto';
 import { RegisterUserDto } from './dto/register.dto';
@@ -10,10 +10,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  @ApiOperation({ summary: 'Iniciar sesión' })
-  @ApiBody({ type: LoginUserDto })
-  @ApiResponse({ status: 200, description: 'Login exitoso, retorna JWT' })
-  @ApiResponse({ status: 400, description: 'Credenciales inválidas' })
+  @HttpCode(HttpStatus.OK)
   async login(@Body() loginUserDto: LoginUserDto) {
     return await this.authService.login(loginUserDto);
   }
