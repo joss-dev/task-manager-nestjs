@@ -6,6 +6,9 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { User } from '../users/entities/user.entity';
 import { TaskFactory } from './factory/task.factory';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { TaskCreatedEvent } from 'src/events/events/task-created.event';
+import { TaskUpdatedEvent } from 'src/events/events/task-updated.event';
 
 @Injectable()
 export class TasksService {
@@ -17,6 +20,8 @@ export class TasksService {
     private readonly userRepository: Repository<User>,
 
     private readonly taskFactory: TaskFactory,
+
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async create(createTaskDto: CreateTaskDto, userId: string): Promise<Task> {
@@ -27,7 +32,15 @@ export class TasksService {
     if (!user) throw new NotFoundException('Usuario no encontrado');
 
     const task = this.taskFactory.create(createTaskDto, user);
-    return this.taskRepository.save(task);
+
+    const savedTask = await this.taskRepository.save(task);
+
+    this.eventEmitter.emit(
+      'task.created',
+      new TaskCreatedEvent(savedTask.id, userId),
+    );
+
+    return savedTask;
   }
 
   async findAll(): Promise<Task[]> {
@@ -61,7 +74,12 @@ export class TasksService {
 
   async update(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
     const task = await this.findOne(id);
+
     Object.assign(task, updateTaskDto);
+    this.eventEmitter.emit(
+      'task.updated',
+      new TaskUpdatedEvent(id, task.user.id),
+    );
     return this.taskRepository.save(task);
   }
 

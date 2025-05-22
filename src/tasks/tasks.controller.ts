@@ -31,6 +31,7 @@ export class TasksController {
   }
 
   @Get()
+  @UseGuards(TaskOwnerGuard)
   findAll(): Promise<Task[]> {
     return this.tasksService.findAll();
   }

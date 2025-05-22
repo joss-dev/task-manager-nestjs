@@ -1,9 +1,18 @@
 import { Module } from '@nestjs/common';
-import { NotificationsService } from './notifications.service';
-import { NotificationsController } from './notifications.controller';
+import { EmailNotificationStrategy } from './strategies/email-notification.strategy';
+import { InternalMessageNotificationStrategy } from './strategies/internal-message-notification.strategy';
+import { NotificationContext } from './notification.context';
 
 @Module({
-  controllers: [NotificationsController],
-  providers: [NotificationsService],
+  providers: [
+    EmailNotificationStrategy,
+    InternalMessageNotificationStrategy,
+    NotificationContext,
+  ],
+  exports: [
+    NotificationContext,
+    EmailNotificationStrategy,
+    InternalMessageNotificationStrategy,
+  ],
 })
 export class NotificationsModule {}
