@@ -141,7 +141,7 @@ Aquí podrás probar los endpoints, ver los modelos y los esquemas de autenticac
 
 - **Repository Pattern:** Abstracción de acceso a datos para tareas y usuarios.
 - **Factory Pattern:** Creación de entidades de tarea desacoplada.
-- **Strategy Pattern:** (Si aplica) Estrategias para notificaciones o validaciones.
+- **Strategy Pattern:** Estrategias para notificaciones.
 
 ---
 
@@ -161,12 +161,3 @@ El sistema emite eventos internos (ej: creación/actualización de tareas) usand
 
 ---
 
-## 📢 Contribuciones
-
-¡Pull requests y sugerencias son bienvenidas! Por favor, abre un issue para discutir cambios importantes.
-
----
-
-## 📄 Licencia
-
-Este proyecto es solo para fines técnicos y educativos.
