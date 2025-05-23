@@ -35,22 +35,24 @@ describe('AuthController (e2e)', () => {
 
     // Registro
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const registerRes = await request(app.getHttpServer() as any)
+    const registerRes = await request(app.getHttpServer())
       .post('/auth/register')
       .send(user)
       .expect(201);
 
-    const { message, userCreated } = registerRes.body as {
+    const { message, user: registeredUser } = registerRes.body as {
       message: string;
-      userCreated: { id: string };
+      user: { id: string; email: string; userName: string };
     };
     expect(message).toBe('User registered successfully');
-    expect(userCreated).toBeDefined();
-    expect(userCreated).toHaveProperty('id');
+    expect(registeredUser).toBeDefined();
+    expect(registeredUser).toHaveProperty('id');
+    expect(registeredUser).toHaveProperty('email', user.email);
+    expect(registeredUser).toHaveProperty('userName', user.userName);
 
     // Login
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const loginRes = await request(app.getHttpServer() as any)
+    const loginRes = await request(app.getHttpServer())
       .post('/auth/login')
       .send({ email: user.email, password: user.password })
       .expect(200);

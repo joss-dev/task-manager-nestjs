@@ -127,7 +127,11 @@ describe('AuthService', () => {
       });
       expect(result).toEqual({
         message: 'User registered successfully',
-        userCreated: mockUser,
+        user: {
+          id: mockUser.id,
+          email: mockUser.email,
+          userName: mockUser.userName,
+        },
       });
     });
   });
