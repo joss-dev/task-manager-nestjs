@@ -3,22 +3,22 @@ import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
-  @ApiProperty({ description: 'Nombre de usuario', minLength: 3 })
+  @ApiProperty({ description: 'Username', minLength: 3 })
   @Transform(({ value }: { value: string }) => value.trim())
   @IsString()
   @MinLength(3, {
-    message: 'El nombre de usuario debe tener al menos 3 caracteres',
+    message: 'Username must be at least 3 characters long',
   })
   userName: string;
 
-  @ApiProperty({ description: 'Email del usuario' })
+  @ApiProperty({ description: 'User email' })
   @Transform(({ value }: { value: string }) => value.trim())
-  @IsEmail({}, { message: 'El email debe ser válido' })
+  @IsEmail({}, { message: 'Email must be valid' })
   email: string;
 
-  @ApiProperty({ description: 'Contraseña del usuario', minLength: 6 })
+  @ApiProperty({ description: 'User password', minLength: 6 })
   @Transform(({ value }: { value: string }) => value.trim())
   @IsString()
-  @MinLength(6, { message: 'La contraseña debe tener al menos 6 caracteres' })
+  @MinLength(6, { message: 'Password must be at least 6 characters long' })
   password: string;
 }

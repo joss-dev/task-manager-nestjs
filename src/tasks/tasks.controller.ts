@@ -27,7 +27,7 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 
-@ApiTags('Tareas')
+@ApiTags('Tasks')
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
 @Controller('tasks')
@@ -35,9 +35,9 @@ export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Crear una nueva tarea' })
+  @ApiOperation({ summary: 'Create a new task' })
   @ApiBody({ type: CreateTaskDto })
-  @ApiResponse({ status: 201, description: 'Tarea creada', type: Task })
+  @ApiResponse({ status: 201, description: 'Task created', type: Task })
   create(
     @Body() createTaskDto: CreateTaskDto,
     @UserId() userId: string,
@@ -46,29 +46,29 @@ export class TasksController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todas las tareas del usuario autenticado' })
-  @ApiResponse({ status: 200, description: 'Lista de tareas', type: [Task] })
+  @ApiOperation({ summary: 'Get all tasks for the authenticated user' })
+  @ApiResponse({ status: 200, description: 'List of tasks', type: [Task] })
   findAll(@UserId() userId: string): Promise<Task[]> {
     return this.tasksService.findAll(userId);
   }
 
   @Get(':id')
   @UseGuards(TaskOwnerGuard)
-  @ApiOperation({ summary: 'Obtener una tarea por ID' })
-  @ApiParam({ name: 'id', type: 'string', description: 'ID de la tarea' })
-  @ApiResponse({ status: 200, description: 'Tarea encontrada', type: Task })
-  @ApiResponse({ status: 404, description: 'Tarea no encontrada' })
+  @ApiOperation({ summary: 'Get a task by ID' })
+  @ApiParam({ name: 'id', type: 'string', description: 'Task ID' })
+  @ApiResponse({ status: 200, description: 'Task found', type: Task })
+  @ApiResponse({ status: 404, description: 'Task not found' })
   findOne(@Param('id', new ParseUUIDPipe()) id: string): Promise<Task> {
     return this.tasksService.findOne(id);
   }
 
   @Patch(':id')
   @UseGuards(TaskOwnerGuard)
-  @ApiOperation({ summary: 'Actualizar una tarea por ID' })
-  @ApiParam({ name: 'id', type: 'string', description: 'ID de la tarea' })
+  @ApiOperation({ summary: 'Update a task by ID' })
+  @ApiParam({ name: 'id', type: 'string', description: 'Task ID' })
   @ApiBody({ type: UpdateTaskDto })
-  @ApiResponse({ status: 200, description: 'Tarea actualizada', type: Task })
-  @ApiResponse({ status: 404, description: 'Tarea no encontrada' })
+  @ApiResponse({ status: 200, description: 'Task updated', type: Task })
+  @ApiResponse({ status: 404, description: 'Task not found' })
   update(
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() updateTaskDto: UpdateTaskDto,
@@ -79,10 +79,10 @@ export class TasksController {
   @Delete(':id')
   @UseGuards(TaskOwnerGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: 'Eliminar (soft delete) una tarea por ID' })
-  @ApiParam({ name: 'id', type: 'string', description: 'ID de la tarea' })
-  @ApiResponse({ status: 204, description: 'Tarea eliminada' })
-  @ApiResponse({ status: 404, description: 'Tarea no encontrada' })
+  @ApiOperation({ summary: 'Delete (soft delete) a task by ID' })
+  @ApiParam({ name: 'id', type: 'string', description: 'Task ID' })
+  @ApiResponse({ status: 204, description: 'Task deleted' })
+  @ApiResponse({ status: 404, description: 'Task not found' })
   remove(@Param('id', new ParseUUIDPipe()) id: string): Promise<void> {
     return this.tasksService.remove(id);
   }

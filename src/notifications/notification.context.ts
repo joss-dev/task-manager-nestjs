@@ -22,7 +22,7 @@ export class NotificationContext {
   notify(eventType: EventType, taskId: string, userId: string): void {
     const strategy = this.strategies.get(eventType);
     if (!strategy) {
-      throw new Error(`Estrategia desconocida para el evento: ${eventType}`);
+      throw new Error(`Unknown strategy for event: ${eventType}`);
     }
 
     strategy.sendNotification(taskId, userId);

@@ -4,7 +4,7 @@ import { LoginUserDto } from './dto/login.dto';
 import { RegisterUserDto } from './dto/register.dto';
 import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
 
-@ApiTags('Autenticación')
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -16,12 +16,12 @@ export class AuthController {
   }
 
   @Post('register')
-  @ApiOperation({ summary: 'Registrar un nuevo usuario' })
+  @ApiOperation({ summary: 'Register a new user' })
   @ApiBody({ type: RegisterUserDto })
-  @ApiResponse({ status: 201, description: 'Usuario registrado' })
+  @ApiResponse({ status: 201, description: 'User registered' })
   @ApiResponse({
     status: 400,
-    description: 'Datos inválidos o usuario existente',
+    description: 'Invalid data or user already exists',
   })
   register(@Body() registerUserDto: RegisterUserDto) {
     return this.authService.register(registerUserDto);
