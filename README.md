@@ -44,13 +44,14 @@ API RESTful para la gestión de tareas, desarrollada con NestJS y PostgreSQL. In
 3. **Configura las variables de entorno:**
    Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido (ajusta según tus necesidades):
    ```env
-   POSTGRES_HOST=localhost
-   POSTGRES_PORT=5433
-   POSTGRES_USER=user_crud
-   POSTGRES_PASSWORD=root
-   POSTGRES_DB=db_crud
-   JWT_SECRET=supersecretkey
-   JWT_EXPIRES_IN=3600s
+      POSTGRES_USER=user_crud
+      POSTGRES_PASSWORD=root
+      POSTGRES_DB=db_crud
+      POSTGRES_PORT=5433
+      POSTGRES_CONTAINER_NAME=postgres_db
+      POSTGRES_VOLUME=./postgres
+      JWT_SECRET=supersecreto123
+      JWT_EXPIRES_IN=1h
    ```
 
 4. **Levanta la base de datos con Docker Compose:**
