@@ -8,6 +8,8 @@ import {
   Delete,
   ParseUUIDPipe,
   UseGuards,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -44,11 +46,10 @@ export class TasksController {
   }
 
   @Get()
-  @UseGuards(TaskOwnerGuard)
   @ApiOperation({ summary: 'Obtener todas las tareas del usuario autenticado' })
   @ApiResponse({ status: 200, description: 'Lista de tareas', type: [Task] })
-  findAll(): Promise<Task[]> {
-    return this.tasksService.findAll();
+  findAll(@UserId() userId: string): Promise<Task[]> {
+    return this.tasksService.findAll(userId);
   }
 
   @Get(':id')
@@ -77,6 +78,7 @@ export class TasksController {
 
   @Delete(':id')
   @UseGuards(TaskOwnerGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Eliminar (soft delete) una tarea por ID' })
   @ApiParam({ name: 'id', type: 'string', description: 'ID de la tarea' })
   @ApiResponse({ status: 204, description: 'Tarea eliminada' })

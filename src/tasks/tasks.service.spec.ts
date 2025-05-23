@@ -96,10 +96,12 @@ describe('TasksService', () => {
   });
 
   describe('findAll', () => {
-    it('should return all tasks', async () => {
+    it('should return all tasks for a user', async () => {
       const tasks = [{ id: '1' }, { id: '2' }] as Task[];
+      const userId = 'user-id';
       taskRepository.findAll.mockResolvedValue(tasks);
-      const result = await service.findAll();
+      const result = await service.findAll(userId);
+      expect(taskRepository.findAll).toHaveBeenCalledWith(userId);
       expect(result).toEqual(tasks);
     });
   });

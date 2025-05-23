@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './entities/task.entity';
 import { Repository, IsNull } from 'typeorm';
@@ -46,8 +50,8 @@ export class TasksService {
     return savedTask;
   }
 
-  async findAll(): Promise<Task[]> {
-    return this.taskRepository.findAll();
+  async findAll(userId: string): Promise<Task[]> {
+    return this.taskRepository.findAll(userId);
   }
 
   async findByIdWithUser(id: string) {
@@ -66,10 +70,18 @@ export class TasksService {
 
   async update(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
     const updatedTask = await this.taskRepository.update(id, updateTaskDto);
+
+    if (!updatedTask.user) {
+      throw new InternalServerErrorException(
+        'Updated task has no associated user',
+      );
+    }
+
     this.eventEmitter.emit(
       'task.updated',
       new TaskUpdatedEvent(id, updatedTask.user.id),
     );
+
     return updatedTask;
   }
 
