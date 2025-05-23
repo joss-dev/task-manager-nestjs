@@ -8,7 +8,7 @@ export class TaskFactory {
   create(createTaskDto: CreateTaskDto, user: User): Task {
     if (!createTaskDto.title || createTaskDto.title.trim().length < 3) {
       throw new BadRequestException(
-        'El título es obligatorio y debe tener al menos 3 caracteres',
+        'Title is required and must be at least 3 characters long',
       );
     }
 

@@ -10,7 +10,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Task Manager API')
-    .setDescription('API para la plataforma Task Manager')
+    .setDescription('API for the Task Manager platform')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

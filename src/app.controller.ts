@@ -8,8 +8,8 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Endpoint raíz de la API' })
-  @ApiResponse({ status: 200, description: 'Mensaje de bienvenida' })
+  @ApiOperation({ summary: 'API root endpoint' })
+  @ApiResponse({ status: 200, description: 'Welcome message' })
   getHello(): string {
     return this.appService.getHello();
   }

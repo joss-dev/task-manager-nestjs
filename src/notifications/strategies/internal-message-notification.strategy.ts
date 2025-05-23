@@ -11,7 +11,7 @@ export class InternalMessageNotificationStrategy
 
   sendNotification(taskId: string, userId: string): void {
     this.logger.log(
-      `Mensaje interno: Tarea actualizada (ID: ${taskId}) por el usuario ${userId}`,
+      `Internal message: Task updated (ID: ${taskId}) by user ${userId}`,
     );
   }
 }

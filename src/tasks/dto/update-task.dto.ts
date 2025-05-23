@@ -3,22 +3,22 @@ import { Transform } from 'class-transformer';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UpdateTaskDto {
-  @ApiPropertyOptional({ description: 'Título de la tarea', minLength: 3 })
+  @ApiPropertyOptional({ description: 'Task title', minLength: 3 })
   @IsOptional()
-  @IsString({ message: 'El título debe ser una cadena de texto' })
-  @MinLength(3, { message: 'El título debe tener al menos 3 caracteres' })
+  @IsString({ message: 'Title must be a string' })
+  @MinLength(3, { message: 'Title must be at least 3 characters long' })
   @Transform(({ value }: { value: string }) => value.trim())
   title?: string;
 
-  @ApiPropertyOptional({ description: 'Descripción de la tarea', minLength: 1 })
+  @ApiPropertyOptional({ description: 'Task description', minLength: 1 })
   @IsOptional()
-  @MinLength(1, { message: 'La descripción no puede estar vacía' })
-  @IsString({ message: 'La descripción debe ser una cadena de texto' })
+  @MinLength(1, { message: 'Description cannot be empty' })
+  @IsString({ message: 'Description must be a string' })
   @Transform(({ value }: { value: string }) => value.trim())
   description?: string;
 
-  @ApiPropertyOptional({ description: 'Indica si la tarea está completada' })
+  @ApiPropertyOptional({ description: 'Indicates if the task is completed' })
   @IsOptional()
-  @IsBoolean({ message: 'El campo isCompleted debe ser un valor booleano' })
+  @IsBoolean({ message: 'The isCompleted field must be a boolean value' })
   isCompleted?: boolean;
 }

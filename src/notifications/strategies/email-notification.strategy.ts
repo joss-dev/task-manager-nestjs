@@ -7,7 +7,7 @@ export class EmailNotificationStrategy implements NotificationStrategy {
 
   sendNotification(taskId: string, userId: string): void {
     this.logger.log(
-      `Email enviado: Nueva tarea (ID: ${taskId}) para usuario ${userId}`,
+      `Email sent: New task (ID: ${taskId}) for user ${userId}`,
     );
   }
 }

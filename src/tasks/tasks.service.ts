@@ -36,7 +36,7 @@ export class TasksService {
       where: { id: userId, deletedAt: IsNull() },
     });
 
-    if (!user) throw new NotFoundException('Usuario no encontrado');
+    if (!user) throw new NotFoundException('User not found');
 
     const task = this.taskFactory.create(createTaskDto, user);
 
@@ -62,7 +62,7 @@ export class TasksService {
     const task = await this.taskRepository.findOne(id);
 
     if (!task) {
-      throw new NotFoundException('Tarea no encontrada');
+      throw new NotFoundException('Task not found');
     }
 
     return task;

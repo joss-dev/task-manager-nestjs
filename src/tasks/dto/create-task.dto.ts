@@ -3,17 +3,17 @@ import { Transform } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateTaskDto {
-  @ApiProperty({ description: 'Título de la tarea', minLength: 3 })
+  @ApiProperty({ description: 'Task title', minLength: 3 })
   @IsString()
-  @IsNotEmpty({ message: 'El título es obligatorio' })
-  @MinLength(3, { message: 'El título debe tener al menos 3 caracteres' })
+  @IsNotEmpty({ message: 'Title is required' })
+  @MinLength(3, { message: 'Title must be at least 3 characters long' })
   @Transform(({ value }: { value: string }) => value.trim())
   title: string;
 
-  @ApiPropertyOptional({ description: 'Descripción de la tarea', minLength: 1 })
+  @ApiPropertyOptional({ description: 'Task description', minLength: 1 })
   @IsOptional()
-  @IsString({ message: 'La descripción debe ser una cadena de texto' })
-  @MinLength(1, { message: 'La descripción no puede estar vacía' })
+  @IsString({ message: 'Description must be a string' })
+  @MinLength(1, { message: 'Description cannot be empty' })
   @Transform(({ value }: { value: string }) => value.trim())
   description?: string;
 }
